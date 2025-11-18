@@ -6,14 +6,14 @@ use bio::io::fastq as bio_fq;
 use criterion::{Criterion, criterion_group, criterion_main};
 use noodles_fastq::io as noodle_fq;
 
-const LR_PATH: &str = "data/long_1000.fq";
-const LR_PATH_GZ: &str = "data/long_1000.fq.gz";
-const SR_PATH: &str = "data/SR_10000.fq";
-const SR_PATH_GZ: &str = "data/SR_10000.fq.gz";
+const LR_PATH: &str = "data/GM24385_1_subset.fastq";
+const LR_PATH_GZ: &str = "data/GM24385_1_subset.fastq.gz";
+const SR_PATH: &str = "data/D1_S1_L001_R1_001_subset.fastq";
+const SR_PATH_GZ: &str = "data/D1_S1_L001_R1_001_subset.fastq.gz";
 
 fn bench_lrfq_parser(c: &mut Criterion) {
     let mut group = c.benchmark_group("LRFQ parser");
-    group.sample_size(100);
+    group.sample_size(50);
 
     group.bench_function("bio", |b| b.iter(|| bio_parse(black_box(LR_PATH))));
     group.bench_function("noodles", |b| b.iter(|| noodles_parse(black_box(LR_PATH))));
@@ -26,7 +26,7 @@ fn bench_lrfq_parser(c: &mut Criterion) {
 
 fn bench_srfq_parser(c: &mut Criterion) {
     let mut group = c.benchmark_group("SRFQ parser");
-    group.sample_size(100);
+    group.sample_size(50);
 
     group.bench_function("bio", |b| b.iter(|| bio_parse(black_box(SR_PATH))));
     group.bench_function("noodles", |b| b.iter(|| noodles_parse(black_box(SR_PATH))));
