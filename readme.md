@@ -1,6 +1,11 @@
 # Benchmark bioinformatics I/O libraries in Rust
 
-**Results:**
+Even with identical hardware and the same operating system, I/O performance can vary widely depending on how the code is written. Factors such as the number of memory copies, frequency of system calls, use of memory-mapped and lazy loading. These differences can all introduce significant variation in overall runtime, especially when working with large files.
+
+There are many bioinformatics I/O libraries in `crates.io`. The goal here is to evaluate how these libraries perform from a user’s point of view. This includes comparing their execution time in common scenarios such as iterating over the entire dataset and performing analysis for each records. I observabled performance rather than low-level implementation details.
+
+
+**Reports:**
 - [Benchmarking FASTX I/O Readers (bio, noodles)](reports/fastx_benchmarks.md)
 - [Benchmarking BAM I/O Readers (rust-htslib, noodles, bam)](reports/bam_benchmarks.md)
 
