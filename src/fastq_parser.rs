@@ -3,10 +3,11 @@ use crate::utils::{NCount, merge_nc_count, open_bufreader};
 use bio::io::fastq as bio_fq;
 use fastq::{self, Record as fastq_record};
 use fxread::initialize_reader as fxread_init_reader;
+use kseq::parse_path as kseq_parse_path;
+use needletail::parse_fastx_file as needletail_init_reader;
 use noodles_fastq::io as noodle_fq;
 use seq_io::fastq::{self as seq_io_fq, Record as seq_io_record};
 use seq_io::parallel as seq_io_parallel;
-use needletail::parse_fastx_file as needletail_init_reader;
 
 pub fn bio_parse(path: &str) -> std::io::Result<NCount> {
     let mut nc_count = NCount::new();
@@ -120,3 +121,15 @@ pub fn needletail_parse(path: &str) -> std::io::Result<NCount> {
     Ok(nc_count)
 }
 
+pub fn kseq_parse(path: &str) -> std::io::Result<NCount> {
+    let mut nc_count = NCount::new();
+    let mut reader = kseq_parse_path(path).unwrap();
+    while let Some(record) = reader.iter_record().unwrap() {
+        record
+            .seq()
+            .as_bytes()
+            .iter()
+            .for_each(|c| nc_count.add(c, 1));
+    }
+    Ok(nc_count)
+}

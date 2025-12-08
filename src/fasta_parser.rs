@@ -14,7 +14,6 @@ pub fn noodles_parse(path: &str) -> std::io::Result<NCount> {
         let seq = result.sequence();
         seq.as_ref().iter().for_each(|e| nc_count.add(e, 1));
     }
-    nc_count.print();
     Ok(nc_count)
 }
 
@@ -26,7 +25,6 @@ pub fn bio_parse(path: &str) -> std::io::Result<NCount> {
         let seq = result.seq();
         seq.iter().for_each(|e| nc_count.add(e, 1));
     }
-    nc_count.print();
     Ok(nc_count)
 }
 

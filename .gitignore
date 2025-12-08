@@ -1,2 +1,4 @@
 /target
 bench.log
+tests/data
+/data
