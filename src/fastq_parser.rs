@@ -77,11 +77,11 @@ pub fn seq_io_parse(path: &str) -> std::io::Result<NCount> {
     Ok(nc_count)
 }
 
-pub fn seq_io_parallel_parse(path: &str) -> std::io::Result<NCount> {
+pub fn seq_io_parallel_parse(path: &str, n_threads: u32) -> std::io::Result<NCount> {
     let reader = open_bufreader(path).map(seq_io_fq::Reader::new)?;
     let out = seq_io_parallel::read_parallel(
         reader,
-        4,
+        n_threads,
         2,
         |record_set| {
             let mut nc_count = NCount::new();

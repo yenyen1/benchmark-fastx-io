@@ -1,11 +1,12 @@
 use crate::utils::{NCount, open_bufreader};
 
+use std::io;
 use bio::io::fasta as bio_fa;
 use noodles_fasta::io as noodle_fa;
 use seq_io::fasta as seq_io_fa;
 use seq_io::parallel as seq_io_parallel;
 
-pub fn noodles_parse(path: &str) -> std::io::Result<NCount> {
+pub fn noodles_parse(path: &str) -> io::Result<NCount> {
     let mut reader = open_bufreader(path).map(noodle_fa::Reader::new)?;
     let mut nc_count = NCount::new();
 
@@ -17,7 +18,7 @@ pub fn noodles_parse(path: &str) -> std::io::Result<NCount> {
     Ok(nc_count)
 }
 
-pub fn bio_parse(path: &str) -> std::io::Result<NCount> {
+pub fn bio_parse(path: &str) -> io::Result<NCount> {
     let reader = open_bufreader(path).map(bio_fa::Reader::new)?;
     let mut nc_count = NCount::new();
     for record in reader.records() {
@@ -28,7 +29,7 @@ pub fn bio_parse(path: &str) -> std::io::Result<NCount> {
     Ok(nc_count)
 }
 
-pub fn seq_io_parse(path: &str) -> std::io::Result<NCount> {
+pub fn seq_io_parse(path: &str) -> io::Result<NCount> {
     let mut nc_count = NCount::new();
     let mut reader = open_bufreader(path).map(seq_io_fa::Reader::new)?;
     while let Some(record) = reader.next() {
@@ -40,11 +41,11 @@ pub fn seq_io_parse(path: &str) -> std::io::Result<NCount> {
     Ok(nc_count)
 }
 
-pub fn seq_io_parallel_parse(path: &str) -> std::io::Result<NCount> {
+pub fn seq_io_parallel_parse(path: &str, n_threads: u32) -> io::Result<NCount> {
     let reader = open_bufreader(path).map(seq_io_fa::Reader::new)?;
     let out = seq_io_parallel::read_parallel(
         reader,
-        4,
+        n_threads,
         2,
         |record_set| {
             let mut nc_count = NCount::new();
@@ -64,3 +65,5 @@ pub fn seq_io_parallel_parse(path: &str) -> std::io::Result<NCount> {
     );
     Ok(out)
 }
+
+

@@ -51,13 +51,13 @@ mod tests {
         let nc_count = seq_io_parse(SR_PATH_GZ);
         assert_eq!(&SR_COUNT, nc_count.unwrap().get());
 
-        let nc_count = seq_io_parallel_parse(LR_PATH);
+        let nc_count = seq_io_parallel_parse(LR_PATH, 2);
         assert_eq!(&LR_COUNT, nc_count.unwrap().get());
-        let nc_count = seq_io_parallel_parse(LR_PATH_GZ);
+        let nc_count = seq_io_parallel_parse(LR_PATH_GZ,2);
         assert_eq!(&LR_COUNT, nc_count.unwrap().get());
-        let nc_count = seq_io_parallel_parse(SR_PATH);
+        let nc_count = seq_io_parallel_parse(SR_PATH,2);
         assert_eq!(&SR_COUNT, nc_count.unwrap().get());
-        let nc_count = seq_io_parallel_parse(SR_PATH_GZ);
+        let nc_count = seq_io_parallel_parse(SR_PATH_GZ,2);
         assert_eq!(&SR_COUNT, nc_count.unwrap().get());
     }
 
@@ -105,7 +105,7 @@ mod tests {
         assert_eq!(&ML_COUNT, nc_count.unwrap().get());
         let nc_count = seq_io_parse(MULTILINE_PATH);
         assert_eq!(&ML_COUNT, nc_count.unwrap().get());
-        let nc_count = seq_io_parallel_parse(MULTILINE_PATH);
+        let nc_count = seq_io_parallel_parse(MULTILINE_PATH, 4);
         assert_eq!(&ML_COUNT, nc_count.unwrap().get());
         // let nc_count = fxread_parse(MULTILINE_PATH);
         // assert_eq!(&ML_COUNT, nc_count.unwrap().get());
