@@ -2,10 +2,10 @@
 
 mod tests {
 
-    use test_bioinformatics_io::fasta_parser::{
+    use benchmark_fastx_io::fasta_parser::{
         bio_parse, noodles_parse, seq_io_parallel_parse, seq_io_parse,
     };
-    use test_bioinformatics_io::fastq_parser::{fxread_parse, kseq_parse, needletail_parse};
+    use benchmark_fastx_io::fastq_parser::{fxread_parse, kseq_parse, needletail_parse};
 
     const LR_PATH: &str = "tests/data/GM24385_1_subset_100.fasta";
     const LR_PATH_GZ: &str = "tests/data/GM24385_1_subset_100.fasta.gz";

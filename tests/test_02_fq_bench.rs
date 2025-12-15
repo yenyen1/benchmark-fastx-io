@@ -2,7 +2,7 @@
 
 mod tests {
 
-    use test_bioinformatics_io::fastq_parser::{
+    use benchmark_fastx_io::fastq_parser::{
         bio_parse, fastq_parallel_parse, fastq_parse, fxread_parse, kseq_parse, needletail_parse,
         noodles_parse, seq_io_parallel_parse, seq_io_parse,
     };
