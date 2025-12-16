@@ -21,8 +21,19 @@ When processing FASTA/FASTQ files, I usually need to iterate through the entire 
 - **FASTX** / **Compression** : Automatically detects FASTA or FASTQ format / compressed file types.
 - **Parallel** : Provides funtionality to read records using multiple threads.
 - **Async** / **SR** / **LR** / **multi-line FASTA**: Supports asynchronous operations / short-read data / long-read data / multi-line FASTA file.
-<br><br><br>
+<br><br>
 
+### Notes
+- **Compression detection** :
+    - **fastq**, **kseq**, and **needletail** detect the compression type by checking the magic number, while **fxread** uses **niffler**. (Related functions: `fastq::parse_path`, `kseq::parse_path`, `needletail::parse_fastx_file`,  `fxread::initialize_reader`)
+    - For crates without built-in compression detection, I check the file’s magic number for gzip compression and return the corresponding reader using `utils::open_bufreader`.
+- **Automatic FASTQ/FASTA detection** : 
+    The same functions for **kseq**, **needletail**, and **fxread** also detect whether a file is FASTQ or FASTA and automatically assign the correct reader by checking the first character (`b'>'` or `b'@'`).
+- **Multiple file support** : 
+    `kseq::parse_path` additionally supports reading multiple files at once through a FOFN (file-of-file-names).
+- **Multi-threading** : 
+    `fastq::parse_path` appears to run in multi-threaded mode by default, without specifying the number of threads.
+<br><br><br>
 
 ## FASTA Reader Report
  
