@@ -11,7 +11,7 @@ noodles-fasta = "0.57.0"
 noodles-fastq = "0.21.0"
 seq_io = "0.3.4"
 
-# avoid C binding
+# with C binding
 fxread = { version = "0.2.14", default-features = false }
 fastq = { version = "0.6.0", default-features = false }
 needletail = { version = "0.6.3", default-features = false, features = ["flate2"] }
