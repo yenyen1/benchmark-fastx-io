@@ -1,6 +1,6 @@
-use benchmark_fastx_io::fastq_parser::{
-    bio_parse, fastq_parallel_parse, fastq_parse, fxread_parse, kseq_parse, needletail_parse,
-    noodles_parse, seq_io_parallel_parse, seq_io_parse,
+use benchmark_fastx_io::singular::fastq_parser::{
+    bio_parse, fastq_parse, fxread_parse, kseq_parse, needletail_parse,
+    noodles_parse, seq_io_parse,
 };
 
 use criterion::{Criterion, criterion_group, criterion_main};
@@ -78,69 +78,6 @@ fn bench_srfq_gz_parser(c: &mut Criterion) {
     });
     group.bench_function("kseq", |b| b.iter(|| kseq_parse(black_box(SR_PATH_GZ))));
     group.bench_function("fastq", |b| b.iter(|| fastq_parse(black_box(SR_PATH_GZ))));
-    group.finish();
-}
-
-fn bench_lr_gz_parallel(c: &mut Criterion) {
-    let mut group = c.benchmark_group("LrFaGz_Para");
-    group.sample_size(SAMPLE_SIZE);
-
-    group.bench_function("lr_seq_io", |b| {
-        b.iter(|| seq_io_parse(black_box(LR_PATH_GZ)))
-    });
-    group.bench_function("lr_seq_io_t2", |b| {
-        b.iter(|| seq_io_parallel_parse(black_box(LR_PATH_GZ), black_box(2)))
-    });
-    group.bench_function("lr_seq_io_t4", |b| {
-        b.iter(|| seq_io_parallel_parse(black_box(LR_PATH_GZ), black_box(4)))
-    });
-    group.bench_function("lr_seq_io_t6", |b| {
-        b.iter(|| seq_io_parallel_parse(black_box(LR_PATH_GZ), black_box(6)))
-    });
-    group.bench_function("lr_fastq", |b| {
-        b.iter(|| fastq_parse(black_box(LR_PATH_GZ)))
-    });
-    group.bench_function("lr_fastq_t2", |b| {
-        b.iter(|| fastq_parallel_parse(black_box(LR_PATH_GZ), black_box(2)))
-    });
-    group.bench_function("lr_fastq_t4", |b| {
-        b.iter(|| fastq_parallel_parse(black_box(LR_PATH_GZ), black_box(4)))
-    });
-    group.bench_function("lr_fastq_t6", |b| {
-        b.iter(|| fastq_parallel_parse(black_box(LR_PATH_GZ), black_box(6)))
-    });
-
-    group.finish();
-}
-
-fn bench_sr_gz_parallel(c: &mut Criterion) {
-    let mut group = c.benchmark_group("LrFaGz_Para");
-    group.sample_size(SAMPLE_SIZE);
-
-    group.bench_function("sr_seq_ior", |b| {
-        b.iter(|| seq_io_parse(black_box(SR_PATH_GZ)))
-    });
-    group.bench_function("sr_seq_io_t2", |b| {
-        b.iter(|| seq_io_parallel_parse(black_box(SR_PATH_GZ), black_box(2)))
-    });
-    group.bench_function("sr_seq_io_t4", |b| {
-        b.iter(|| seq_io_parallel_parse(black_box(SR_PATH_GZ), black_box(4)))
-    });
-    group.bench_function("sr_seq_io_t6", |b| {
-        b.iter(|| seq_io_parallel_parse(black_box(SR_PATH_GZ), black_box(6)))
-    });
-    group.bench_function("sr_fastq", |b| {
-        b.iter(|| fastq_parse(black_box(SR_PATH_GZ)))
-    });
-    group.bench_function("sr_fastq_t2", |b| {
-        b.iter(|| fastq_parallel_parse(black_box(SR_PATH_GZ), black_box(2)))
-    });
-    group.bench_function("sr_fastq_t4", |b| {
-        b.iter(|| fastq_parallel_parse(black_box(SR_PATH_GZ), black_box(4)))
-    });
-    group.bench_function("sr_fastq_t6", |b| {
-        b.iter(|| fastq_parallel_parse(black_box(SR_PATH_GZ), black_box(6)))
-    });
     group.finish();
 }
 

@@ -2,9 +2,9 @@
 
 mod tests {
 
-    use benchmark_fastx_io::fastq_parser::{
+    use benchmark_fastx_io::singular::fastq_parser::{
         bio_parse, fastq_parallel_parse, fastq_parse, fxread_parse, kseq_parse, needletail_parse,
-        noodles_parse, seq_io_parallel_parse, seq_io_parse,
+        noodles_parse, seq_io_parse,
     };
 
     const LR_PATH: &str = "tests/data/GM24385_1_subset_100.fastq";
@@ -66,15 +66,6 @@ mod tests {
         let nc_count = seq_io_parse(SR_PATH);
         assert_eq!(&SR_COUNT, nc_count.unwrap().get());
         let nc_count = seq_io_parse(SR_PATH_GZ);
-        assert_eq!(&SR_COUNT, nc_count.unwrap().get());
-
-        let nc_count = seq_io_parallel_parse(LR_PATH, 2);
-        assert_eq!(&LR_COUNT, nc_count.unwrap().get());
-        let nc_count = seq_io_parallel_parse(LR_PATH_GZ, 2);
-        assert_eq!(&LR_COUNT, nc_count.unwrap().get());
-        let nc_count = seq_io_parallel_parse(SR_PATH, 2);
-        assert_eq!(&SR_COUNT, nc_count.unwrap().get());
-        let nc_count = seq_io_parallel_parse(SR_PATH_GZ, 2);
         assert_eq!(&SR_COUNT, nc_count.unwrap().get());
     }
 
