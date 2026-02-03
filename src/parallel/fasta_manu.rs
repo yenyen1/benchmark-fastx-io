@@ -34,6 +34,7 @@ pub fn manu_seqio(path: &str, num_threads: usize) -> std::io::Result<NCount> {
                 work_tx.send(record_set).unwrap();
                 record_set = pool_rx.recv()?;
             }
+            
             record_set.push(&[], &record.full_seq(), &[]);
             
         }

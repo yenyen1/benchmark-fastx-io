@@ -77,4 +77,11 @@ This report summarizes the average runtime measured with `Criterion.rs` (sample 
 - [FASTQ Violin Plots](fastx_plots.md#fastq-violin-plots)
 <br><br>
 
+## Multi-threaded Mode
+When processing FASTX data in a single-threaded program, reading and computation happen sequentially (one by one). This performance can be improved by using a multi-threaded approach, where a thread handles the data input while other threads focus on computation. In this design, the program no longer needs to pause and wait for the calculation to finish before reading the next record. Furthermore, the computation itself can be executed in parallel if the task is divisible.
+
+`seq-io` crate provides an API `seq_io::parallel::parallel_fasta` to perform a multi-threaded processing without manually managing threads. However, it lacks the flexibility needed for more complex workflows and also may be difficult to use for those new to multi-threaded programming. I demostrated my own multi-threaded implementation to provide a clearer and more flexible alternative. The detials of configuration design: [Multi-threaded programing in Rust](multi_thread.md#multi-threaded-programming-in-rust). 
+
+In the comparison report, 
+
  [Back to ReadMe](../readme.md)
