@@ -80,8 +80,29 @@ This report summarizes the average runtime measured with `Criterion.rs` (sample 
 ## Multi-threaded Mode
 When processing FASTX data in a single-threaded program, reading and computation happen sequentially (one by one). This performance can be improved by using a multi-threaded approach, where a thread handles the data input while other threads focus on computation. In this design, the program no longer needs to pause and wait for the calculation to finish before reading the next record. Furthermore, the computation itself can be executed in parallel if the task is divisible.
 
-`seq-io` crate provides an API `seq_io::parallel::parallel_fasta` to perform a multi-threaded processing without manually managing threads. However, it lacks the flexibility needed for more complex workflows and also may be difficult to use for those new to multi-threaded programming. I demostrated my own multi-threaded implementation to provide a clearer and more flexible alternative. The detials of configuration design: [Multi-threaded programing in Rust](multi_thread.md#multi-threaded-programming-in-rust). 
+### Seq-io parallel mode vs Custom code
+`seq-io` crate provides APIs (`seq_io::parallel::parallel_fasta`/`parallel_fastq`) to perform a multi-threaded processing without manually managing threads. However, it lacks the flexibility needed for more complex workflows and also may be difficult to use for those new to multi-threaded programming. I demostrated my own multi-threaded implementation to provide a clearer and more flexible alternative. The detials of configuration design: [Multi-threaded programing in Rust](multi_thread.md). 
 
-In the comparison report, 
+### Results
+In the comparison report, we focused primarily on compressed files, as they are significantly more computationally intensive and time-consuming to process. Since the analysis in our test is relatively simple, the program easily hits a reader bottleneck. This occurs when the reader thread cannot decompress and fill buffers fast enough to keep up with the worker threads, leading to thread starvation where workers remain idle while waiting for data.
+
+Here, we specifically compare three configurations: single mode, one reader thread with a single worker thread (t=1), and one reader thread with two worker threads (t=2).
+
+
+| library |  FA_LR_E1   |  FA_SR_E1   |  FQ_LR_E1   |  FQ_SR_E1   |  
+|:-------:|:-----------:|:-----------:|:-----------:|:-----------:|
+| seq-io single mode                | 3.89s | 5.42s | 8.34s | 9.11s |
+| seq-io parallel mode (t=1)        | 2.09s | 3.46s | 6.57s | 7.26s |
+| seq-io parallel mode (t=2)        | 2.08s | 3.36s | 6.63s | 7.34s |
+| custom code with seq-io (t=1)     | 2.08s | 3.27s | 6.65s | 7.01s |
+| custom code with seq-io (t=2)     | 2.08s | 3.27s | 6.55s | 7.00s |
+| custom code with needletail (t=1) | 2.14s | 3.41s | 6.56s | 7.01s |
+| custom code with needletail (t=2) | 2.15s | 3.41s | 6.57s | 7.01s |
+
+<br>
+
+- [Parallel Mode Violin Plots](fastx_plots.md)
+
+<br><br>
 
  [Back to ReadMe](../readme.md)

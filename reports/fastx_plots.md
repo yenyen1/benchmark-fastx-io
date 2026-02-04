@@ -44,3 +44,20 @@ The violin plot shows the runtime distribution for iterating over entire FASTQ f
 <br><br>
 
 [Back to FASTQ Reader Report](fastx_benchmarks.md#fastq-reader-report)
+
+<br><br><br><br>
+
+## Parallel Mode
+#### GZ compressed FASTA Violin Plot 
+#### Environment 1
+![LR_FASTA_GZ](plots/fasta_para_reader/env1_violin_LRFA_GZ.png)
+![SR_FASTA_GZ](plots/fasta_para_reader/env1_violin_SRFA_GZ.png) 
+
+#### GZ compressed FASTQ Violin Plot 
+#### Environment 1
+![LR_FASTQ_GZ](plots/fastq_para_reader/env1_violin_LRFQ_GZ.png)
+![SR_FASTQ_GZ](plots/fastq_para_reader/env1_violin_SRFQ_GZ.png) 
+<br><br>
+
+
+[Back to Parallel Mode Report](fastx_benchmarks.md#seq-io-parallel-mode-vs-custom-code)
