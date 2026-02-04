@@ -101,7 +101,7 @@ Here, we specifically compare three configurations: single mode, one reader thre
 
 <br>
 
-- [Parallel Mode Violin Plots](fastx_plots.md)
+- [Parallel Mode Violin Plots](fastx_plots.md#parallel-mode)
 
 <br><br>
 
