@@ -19,4 +19,6 @@ Depanding on how the code is written, the runtime can vary due to factors such a
 - [Summary of Features in FASTA/FASTQ Crates](reports/fastx_benchmarks.md#summary-of-fastx-features)
 - [Benchmark Report for FASTA Readers](reports/fastx_benchmarks.md#fasta-reader-report) : comparing their average runtime when iterating through an entire FASTA file.
 - [Benchmark Report for FASTQ Readers](reports/fastx_benchmarks.md#fasta-reader-report) : comparing their average runtime when iterating through an entire FASTQ file.
+- [Benchmark Report for FASTA Readers](reports/fastx_benchmarks.md#fasta-reader-report) : comparing their average runtime when iterating through an entire FASTA file.
+- [Benchmark Report for Parallel Mode of FASTX Readers](reports/fastx_benchmarks.md#seq-io-parallel-mode-vs-custom-code) : comparing parallel mode of `seq-io` with a custom implementation.
 

@@ -1,6 +1,7 @@
 const ID_BYTE_LIMIT: usize = 1024 * 1024;
 const SEQ_BYTE_LIMIT: usize = 4 * 1024 * 1024;
 const RECORDSET_SIZE_LIMIT: usize = 16 * 1024;
+
 pub struct OwnedRecordSet {
     ids: Vec<u8>,
     seqs: Vec<u8>,

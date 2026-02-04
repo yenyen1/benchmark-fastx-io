@@ -1,4 +1,4 @@
-use crate::parallel::record::OwnedRecordSet;
+use crate::{parallel::record::OwnedRecordSet, utils::dna::NCount};
 use crate::utils::utils::open_bufreader;
 use crate::utils::dna::get_actgn_idx_from_ascii;
 
@@ -7,15 +7,15 @@ use std::thread;
 use anyhow::Result;
 use crossbeam_channel::bounded;
 use seq_io::fastq::{Reader, Record};
+// use needletail::parse_fastx_file as needletail_init_reader;
 
-pub fn manu_parallel(path: &str) -> std::io::Result<()> {
-    let num_workers: usize = 2;
-    let pool_size: usize = num_workers *2;
+pub fn manu_seqio(path: &str, num_threads: usize) -> std::io::Result<NCount> {
+    let pool_size: usize = num_threads *2;
 
     // 0-1. Create channel to pass records to workers
     let (work_tx, work_rx) = bounded::<OwnedRecordSet>(pool_size);
     // 0-2. Create channel to pass results to main thread
-    let (result_tx, result_rx) = bounded::<[u64; 5]>(num_workers);
+    let (result_tx, result_rx) = bounded::<[u64; 5]>(num_threads);
     // 0-3. Create pool manager
     let (pool_tx, pool_rx) = bounded::<OwnedRecordSet>(pool_size);
     for _ in 0..pool_size {
@@ -34,7 +34,8 @@ pub fn manu_parallel(path: &str) -> std::io::Result<()> {
                 work_tx.send(record_set).unwrap();
                 record_set = pool_rx.recv()?;
             }
-            record_set.push(record.id_bytes(), record.seq(), record.qual());
+            
+            record_set.push(&[], &record.seq(), &[]);
             
         }
         if !record_set.is_empty() {
@@ -46,7 +47,7 @@ pub fn manu_parallel(path: &str) -> std::io::Result<()> {
 
     // 2. Create workers threads
     let mut workers_handles: Vec<thread::JoinHandle<()>> = Vec::new();
-    for _ in 0..num_workers {
+    for _ in 0..num_threads {
         let w_rx = work_rx.clone();
         let p_tx = pool_tx.clone();
         let res_tx = result_tx.clone();
@@ -80,11 +81,10 @@ pub fn manu_parallel(path: &str) -> std::io::Result<()> {
 
     // 3. Main Thread summarized results
     drop(result_tx);
-    let mut sum_result: [u64; 5]= [0; 5];
+    let mut nc_count = NCount::new();
+
     for res in result_rx.iter(){
-        for i in 0..5 {
-            sum_result[i] += &res[i];
-        }
+        nc_count.add_by_nc_arr(&res);
     };
 
     // 4. Wait for reader thread and worker threads closed
@@ -95,6 +95,5 @@ pub fn manu_parallel(path: &str) -> std::io::Result<()> {
         h.join().unwrap();
     }
 
-    Ok(())
+    Ok(nc_count)
 }
-
